@@ -6,11 +6,19 @@
 }
 <h1>Mitgliedschaften</h1>
 
+<form asp-action="CreateEditMitgliedschaften_">
+    <button type="submit" class="btn btn-primary">+ In Gruppe eintragen</button>
+</form>
+
+<hr />
+
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Username</th>
             <th scope="col">IdInteressengruppe</th>
+            <th scope="col">Bearbeiten</th>
+            <th scope="col">Löschen</th>
         </tr>
     </thead>
 
@@ -21,6 +29,16 @@
                 <tr>
                     <td>@mitgliedschaft.Username</td>
                     <td>@mitgliedschaft.IdInteressengruppe</td>
+                    <td>
+                        <form asp-action="CreateEditMitgliedschaften_" asp-route-id="@mitgliedschaft.Id">
+                            <button type="submit" class="btn btn-warning">Bearbeiten</button>
+                        </form>
+                    </td>                       
+                    <td>
+                        <form asp-action="DeleteMitgliedschaften" asp-route-id="@mitgliedschaft.Id">
+                            <button type="submit" class="btn btn-danger">Löschen</button>
+                        </form>
+                    </td>
                 </tr>
                 
             }

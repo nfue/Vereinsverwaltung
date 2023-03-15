@@ -1,0 +1,43 @@
+﻿@model Mitgliedschaft
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="card">
+    <div class="card-header">
+        <h5>Interessengruppen hinzufügen/bearbeiten</h5>
+    </div>
+
+    <form asp-action="CreateEditMitgliedschaften" method="post">
+        <div class="card-body">
+            <div class="row">
+                <div class="col form-group">
+                    <input hidden asp-for="Id" placeholder="ID" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <input asp-for="Username" placeholder="E-Mail" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <select asp-for="IdInteressengruppe" placeholder="ID der Interessengruppe" class="form-control">
+                        @foreach(var item in ViewBag.Items as List<SelectListItem>)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary">Speichern</button>
+        </div>
+    </form>
+</div>

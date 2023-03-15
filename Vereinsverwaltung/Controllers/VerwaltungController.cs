@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using Vereinsverwaltung.Data;
 using Vereinsverwaltung.Models;
@@ -39,6 +40,62 @@ namespace Vereinsverwaltung.Controllers
             var mitgliedschaften=_context.Mitgliedschaften.ToList();
             ViewBag.Mitgliedschaften = mitgliedschaften;
             return View();
+        }
+
+        public IActionResult CreateEditMitgliedschaften_(int id)
+        {
+            if (id == 0)
+            {
+                return View("CreateEditMitgliedschaften");
+            }
+
+            var mitgliedschaftindb = _context.Mitgliedschaften.Find(id);
+
+            if (mitgliedschaftindb == null)
+            {
+                return NotFound();
+            }
+
+            var items = _context.Interessengruppen.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).ToList();
+
+            ViewBag.Items = items;
+
+            return View("CreateEditMitgliedschaften", mitgliedschaftindb);
+        }
+
+        [HttpPost]
+        public IActionResult CreateEditMitgliedschaften(Mitgliedschaft mitgliedschaft)
+        {
+            if (mitgliedschaft.Id == 0)
+            {
+                _context.Mitgliedschaften.Add(mitgliedschaft);
+            }
+            else
+            {
+                _context.Mitgliedschaften.Update(mitgliedschaft);
+            }
+            _context.SaveChanges();
+
+            return RedirectToAction("Mitgliedschaften");
+        }
+
+        public IActionResult DeleteMitgliedschaften(int id)
+        {
+            var mitgliedschaftindb = _context.Mitgliedschaften.Find(id);
+
+            if (mitgliedschaftindb == null)
+            {
+                return NotFound();
+            }
+
+            _context.Mitgliedschaften.Remove(mitgliedschaftindb);
+            _context.SaveChanges();
+
+            return RedirectToAction("Mitgliedschaften");
         }
 
         public IActionResult Gruppenteilnehmer()
