@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using Vereinsverwaltung.Data;
@@ -6,6 +7,7 @@ using Vereinsverwaltung.Models;
 
 namespace Vereinsverwaltung.Controllers
 {
+    [Authorize]
     public class VerwaltungController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -44,6 +46,14 @@ namespace Vereinsverwaltung.Controllers
 
         public IActionResult CreateEditMitgliedschaften_(int id)
         {
+            var items = _context.Interessengruppen.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).ToList();
+
+            ViewBag.Items = items;
+
             if (id == 0)
             {
                 return View("CreateEditMitgliedschaften");
@@ -55,14 +65,6 @@ namespace Vereinsverwaltung.Controllers
             {
                 return NotFound();
             }
-
-            var items = _context.Interessengruppen.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name
-            }).OrderBy(x => x.Text).ToList();
-
-            ViewBag.Items = items;
 
             return View("CreateEditMitgliedschaften", mitgliedschaftindb);
         }
