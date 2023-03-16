@@ -87,7 +87,7 @@ namespace Vereinsverwaltung
         public async Task CreateDefaultUser(IServiceProvider serviceProvider)
         {
             var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
-            var adminUser = await userManager.FindByNameAsync("admin@vereinverwaltung.de");
+            var adminUser = await userManager.FindByNameAsync("admin@vereinsverwaltung.de");
 
             if (adminUser == null)
             {
@@ -98,10 +98,10 @@ namespace Vereinsverwaltung
                 };
 
                 await userManager.CreateAsync(user, "Test1#");
-                adminUser = await userManager.FindByNameAsync("admin@vereinverwaltung.de");
+                adminUser = await userManager.FindByNameAsync("admin@vereinsverwaltung.de");
 
             }
-            userManager.AddToRoleAsync(adminUser, "Admin");
+            await userManager.AddToRoleAsync(adminUser, "Admin");
         }
     }
 }
