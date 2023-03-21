@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
@@ -39,9 +40,20 @@ namespace Vereinsverwaltung.Controllers
 
         public IActionResult Mitgliedschaften()
         {
-            var mitgliedschaften=_context.Mitgliedschaften.ToList();
-            ViewBag.Mitgliedschaften = mitgliedschaften;
-            return View();
+            string currentusername = User.Identity.Name;
+            var mitgliedschaften =_context.Mitgliedschaften.Where(t=>t.Username==currentusername).ToList();
+
+            if (User.IsInRole("Admin"))
+            {
+                var mitgliedschaftennotfiltered = _context.Mitgliedschaften.ToList();
+                ViewBag.Mitgliedschaften = mitgliedschaftennotfiltered;
+                return View();
+            }
+            else
+            {
+                ViewBag.Mitgliedschaften = mitgliedschaften;
+                return View();
+            }
         }
 
         public IActionResult CreateEditMitgliedschaften_(int id)
