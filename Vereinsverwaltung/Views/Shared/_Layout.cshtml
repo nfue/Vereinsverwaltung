@@ -28,9 +28,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Verwaltung" asp-action="Mitgliedschaften">Mitgliedschaften</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Verwaltung" asp-action="Gruppenteilnehmer">Gruppenteilnehmer</a>
-                        </li>
+                        @{
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Verwaltung" asp-action="Gruppenteilnehmer">Gruppenteilnehmer</a>
+                                </li>
+                            }
+                        }
+                        
                     </ul>
                 </div>
             </div>
